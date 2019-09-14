@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace CodingChallenge
 {
@@ -8,7 +9,9 @@ namespace CodingChallenge
         {
             Coordinates MapSize;
             Ship ship;
-              
+            List<Instruction> shipInstructions;
+
+
             try
             {
                 // Read map size from command line
@@ -18,6 +21,9 @@ namespace CodingChallenge
                 // Read ship starting position and orientation 
                 ship = ReadShipFromCommandLine();
 
+                // Read ship instructions
+                shipInstructions = ReadInstructionsFromCommandLine();        
+
                 PrintShipFinalPosition(ship);
             }
             catch(Exception ex)
@@ -26,6 +32,34 @@ namespace CodingChallenge
             }
 
             Console.WriteLine("End of program");
+        }
+
+        private static List<Instruction> ReadInstructionsFromCommandLine()
+        {
+            List<Instruction> instructionList = new List<Instruction>();
+            Console.WriteLine("Enter Ship Instructions");
+            string instructions = Console.ReadLine();
+
+            if (instructions.Length >= 100 || instructions.Length == 0)
+            {
+                throw new Exception("Invalid Instruction Length");
+            }
+
+            for (int i = 0; i < instructions.Length; i++)
+            {
+                if(instructions[i] != (char)Instruction.Left &&
+                   instructions[i] != (char)Instruction.Right &&
+                   instructions[i] != (char)Instruction.Forward)
+                {
+                    throw new Exception("Invalid Instruction");
+                }
+                else
+                {
+                    instructionList.Add((Instruction)instructions[i]);
+                }                    
+            }
+
+            return instructionList;
         }
 
         private static Coordinates ReadCoordinatesFromCommandLine()
