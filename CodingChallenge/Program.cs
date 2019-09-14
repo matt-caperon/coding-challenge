@@ -75,6 +75,9 @@ namespace CodingChallenge
 
                                     // Record warning for other ships
                                     warningPositions.Add(newCoordinates);
+
+                                    // Read no more instructions for this ship
+                                    break;
                                 }
                                 else
                                 {
