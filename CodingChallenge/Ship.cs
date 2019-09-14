@@ -79,5 +79,30 @@ namespace CodingChallenge
             }
         }
 
+        public Coordinates GetNewCoordinatesOnForward()
+        {
+            // Set current coordinates
+            Coordinates newCoordinates = coordinates;
+
+            // Determine next coordinates if ship is moved forwards
+            switch (orientation)
+            {
+                case Orientation.North:
+                    newCoordinates.y++;
+                    break;
+                case Orientation.East:
+                    newCoordinates.x++;
+                    break;
+                case Orientation.South:
+                    newCoordinates.y--;
+                    break;
+                case Orientation.West:
+                    newCoordinates.x--;
+                    break;
+                default:
+                    throw new Exception("Invalid Orientation");
+            }
+            return newCoordinates;
+        }
     }
 }
