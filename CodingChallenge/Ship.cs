@@ -1,5 +1,4 @@
-﻿
-using static CodingChallenge.Program;
+﻿using System;
 
 namespace CodingChallenge
 {
@@ -34,6 +33,69 @@ namespace CodingChallenge
         {
             this.coordinates = coordinates;
             this.orientation = orientation;
+        }
+
+        public void TurnLeft()
+        {
+            switch (orientation)
+            {
+                case Orientation.North:
+                    orientation = Orientation.West;
+                    break;
+                case Orientation.West:
+                    orientation = Orientation.South;
+                    break;
+                case Orientation.South:
+                    orientation = Orientation.East;
+                    break;
+                case Orientation.East:
+                    orientation = Orientation.North;
+                    break;
+                default:
+                    throw new Exception("Invalid Orientation");
+            }
+        }
+
+        public void TurnRight()
+        {
+            switch (orientation)
+            {
+                case Orientation.North:
+                    orientation = Orientation.East;
+                    break;
+                case Orientation.East:
+                    orientation = Orientation.South;
+                    break;
+                case Orientation.South:
+                    orientation = Orientation.West;
+                    break;
+                case Orientation.West:
+                    orientation = Orientation.North;
+                    break;
+                default:
+                    throw new Exception("Invalid Orientation");
+            }
+        }
+
+        public void GoForward()
+        {
+            switch (orientation)
+            {
+                case Orientation.North:
+                    coordinates.y++;
+                    break;
+                case Orientation.East:
+                    coordinates.x++;
+                    break;
+                case Orientation.South:
+                    coordinates.y--;
+                    break;
+                case Orientation.West:
+                    coordinates.x--;
+                    break;
+                default:
+                    throw new Exception("Invalid Orientation");
+            }
         }
 
     }
