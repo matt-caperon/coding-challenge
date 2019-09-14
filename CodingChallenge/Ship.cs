@@ -15,7 +15,7 @@ namespace CodingChallenge
         }
     }
 
-    enum Orientation{
+    enum Orientation : int{
         North = 'N', 
         East = 'E',
         South = 'S',
