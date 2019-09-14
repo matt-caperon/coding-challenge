@@ -8,10 +8,12 @@ namespace CodingChallenge
         static void Main(string[] args)
         {
             Coordinates mapSize;
-            List<Ship> ships;
+            Ship ship;
+            List<Ship> ships = new List<Ship>();
             List<Instruction> shipInstructions;
             List<Coordinates> warningPositions = new List<Coordinates>();
             Coordinates newCoordinates;
+            int shipCount;
             bool shipOnWarningPosition;
 
             try
@@ -19,12 +21,14 @@ namespace CodingChallenge
                 // Read map size from command line
                 mapSize = CommandLine.ReadCoordinatesFromCommandLine();
 
-                // Read ship starting position and orientation 
-                ships = CommandLine.ReadShipsFromCommandLine();
+                // Read ship count;
+                shipCount = CommandLine.ReadShipCountFromCommandLine();
 
-                // Perform instructions on each ship sequentially
-                foreach (Ship ship in ships)
+                for (int i = 0; i < shipCount; i ++)
                 {
+                    // Read ship starting position and orientation 
+                    ship = CommandLine.ReadShipFromCommandLine();
+
                     // Reset flag
                     shipOnWarningPosition = false;
 
@@ -59,34 +63,41 @@ namespace CodingChallenge
                                 }
                             }
 
-                            // New coordinates would cause ship to be lost, skip instruction
-                            if (shipOnWarningPosition)
+                            // New coorinates have no warning
+                            if (!shipOnWarningPosition)
                             {
-                                continue;
-                            }
+                                // Determine if ship is lost
+                                if (newCoordinates.x > mapSize.x || newCoordinates.y > mapSize.y)
+                                {
+                                    // Mark ship as lost
+                                    ship.isLost = true;
 
-                            // Determine if ship is lost
-                            if (newCoordinates.x > mapSize.x || newCoordinates.y > mapSize.y)
-                            {
-                                // Mark ship as lost
-                                ship.isLost = true;
-
-                                // Record warning for other ships
-                                warningPositions.Add(newCoordinates);
+                                    // Record warning for other ships
+                                    warningPositions.Add(newCoordinates);
+                                }
+                                else
+                                {
+                                    // Move Ship forward
+                                    ship.GoForward();
+                                }
                             }
                             else
                             {
-                                // Move Ship forward
-                                ship.GoForward();
-                            }             
+                                // New coordinates would cause ship to be lost, skip instruction
+                                continue;
+                            }                 
                         }
                     }
+                    ships.Add(ship);
+                }
 
-                    // Print ship final position and orientation
-                    CommandLine.PrintShipFinalPosition(ship);
+                // Print ship final position and orientation
+                foreach (Ship shipFinal in ships)
+                {        
+                    CommandLine.PrintShipFinalPosition(shipFinal);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine("An error has occured: " + ex.Message);
             }
