@@ -24,20 +24,20 @@ namespace CodingChallenge
                 // Read ship count;
                 shipCount = CommandLine.ReadShipCountFromCommandLine();
 
-                for (int i = 0; i < shipCount; i ++)
+                for (int i = 0; i < shipCount; i++)
                 {
                     // Read ship starting position and orientation 
                     ship = CommandLine.ReadShipFromCommandLine();
-
-                    // Reset flag
-                    shipOnWarningPosition = false;
-
+                
                     // Read ship instructions
                     shipInstructions = CommandLine.ReadInstructionsFromCommandLine();
 
                     // Cycle through ship instructions from list
                     foreach (Instruction instruction in shipInstructions)
                     {
+                        // Reset flag
+                        shipOnWarningPosition = false;
+
                         // Perform instruction on ship
                         if (instruction == Instruction.Left)
                         {
@@ -83,7 +83,7 @@ namespace CodingChallenge
                             }
                             else
                             {
-                                // New coordinates would cause ship to be lost, skip instruction
+                                // New coordinates would cause ship to be lost, no instruction performed
                                 continue;
                             }                 
                         }
