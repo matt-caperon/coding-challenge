@@ -8,39 +8,41 @@ namespace CodingChallenge
         static void Main(string[] args)
         {
             Coordinates MapSize;
-            Ship ship;
+            List<Ship> ships;
             List<Instruction> shipInstructions;
 
             try
             {
                 // Read map size from command line
                 MapSize = CommandLine.ReadCoordinatesFromCommandLine();
-                Console.WriteLine("Map Size is: {0} {1}", MapSize.x, MapSize.y);
 
                 // Read ship starting position and orientation 
-                ship = CommandLine.ReadShipFromCommandLine();
+                ships = CommandLine.ReadShipsFromCommandLine();
 
-                // Read ship instructions
-                shipInstructions = CommandLine.ReadInstructionsFromCommandLine();
+                foreach (Ship ship in ships) {
 
-                foreach (Instruction instruction in shipInstructions)
-                {
-                    if (instruction == Instruction.Left)
+                    // Read ship instructions
+                    shipInstructions = CommandLine.ReadInstructionsFromCommandLine();
+
+                    foreach (Instruction instruction in shipInstructions)
                     {
-                        ship.TurnLeft();
+                        if (instruction == Instruction.Left)
+                        {
+                            ship.TurnLeft();
+                        }
+                        else if (instruction == Instruction.Right)
+                        {
+                            ship.TurnRight();
+                        }
+                        else if (instruction == Instruction.Forward)
+                        {
+                            ship.GoForward();
+                        }
                     }
-                    else if (instruction == Instruction.Right)
-                    {
-                        ship.TurnRight();
-                    }
-                    else if (instruction == Instruction.Forward)
-                    {
-                        ship.GoForward();
-                    }
+
+                    // Print ship final position and orientation
+                    CommandLine.PrintShipFinalPosition(ship);
                 }
-
-                // Print ship final position and orientation
-                CommandLine.PrintShipFinalPosition(ship);
             }
             catch(Exception ex)
             {

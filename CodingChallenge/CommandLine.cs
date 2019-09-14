@@ -6,13 +6,19 @@ namespace CodingChallenge
 {
     class CommandLine
     {
+        private const int MaxShips = 10;
+        private const int MaxInstructionLength = 100;
+        private const int MaxCoordinate = 50;
+        private const int MinShipCoordinate = 0;
+        private const int MinMapSizeCoorinate = 1;
+        
         public static List<Instruction> ReadInstructionsFromCommandLine()
         {
             List<Instruction> instructionList = new List<Instruction>();
             Console.WriteLine("Enter Ship Instructions");
             string instructions = Console.ReadLine();
 
-            if (instructions.Length >= 100 || instructions.Length == 0)
+            if (instructions.Length >= MaxInstructionLength || instructions.Length == 0)
             {
                 throw new Exception("Invalid Instruction Length");
             }
@@ -50,8 +56,8 @@ namespace CodingChallenge
             mapXCoordinate = Int32.Parse(coordinates[0]);
             mapYCoordinate = Int32.Parse(coordinates[1]);
 
-            if (mapXCoordinate < 1 || mapYCoordinate < 1 ||
-                mapXCoordinate > 50 || mapYCoordinate > 50)
+            if (mapXCoordinate < MinMapSizeCoorinate || mapYCoordinate < MinMapSizeCoorinate ||
+                mapXCoordinate > MaxCoordinate || mapYCoordinate > MaxCoordinate)
             {
                 throw new Exception("Invalid Map Coordinate");
             }
@@ -59,38 +65,56 @@ namespace CodingChallenge
             return new Coordinates(Int32.Parse(coordinates[0]), Int32.Parse(coordinates[1]));
         }
 
-        public static Ship ReadShipFromCommandLine()
+        public static List<Ship> ReadShipsFromCommandLine()
         {
+            List<Ship> shipList = new List<Ship>();
             string commandInput;
+            int numberOfShips;
             int shipXCoordinate;
             int shipYCoordinate;
             char shipOrientation;
 
-            Console.WriteLine("Enter Ship Starting Position and Orientation");
+            // Read number of ships from command line
+            Console.WriteLine("Enter Number of Ships");
             commandInput = Console.ReadLine();
-            var shipPositionAndOrientation = commandInput.Split(' ');
+            numberOfShips = int.Parse(commandInput);
 
-            if (shipPositionAndOrientation.Length != 3)
+            if (numberOfShips > MaxShips || numberOfShips < 1)
             {
-                throw new Exception("Invalid Input for Ship");
+                throw new Exception("Invalid Ship Number");
             }
 
-            shipXCoordinate = int.Parse(shipPositionAndOrientation[0]);
-            shipYCoordinate = int.Parse(shipPositionAndOrientation[1]);
-            shipOrientation = char.Parse(shipPositionAndOrientation[2]);
-
-            if (shipXCoordinate < 1 || shipYCoordinate < 1 ||
-                shipXCoordinate > 50 || shipYCoordinate > 50)
+            for (int i = 0; i < numberOfShips; i++)
             {
-                throw new Exception("Invalid Ship Coordinate");
+                // Reach each ships starting position and orientation
+                Console.WriteLine("Enter Ship Starting Position and Orientation");
+                commandInput = Console.ReadLine();
+                var shipPositionAndOrientation = commandInput.Split(' ');
+
+                if (shipPositionAndOrientation.Length != 3)
+                {
+                    throw new Exception("Invalid Input for Ship");
+                }
+
+                shipXCoordinate = int.Parse(shipPositionAndOrientation[0]);
+                shipYCoordinate = int.Parse(shipPositionAndOrientation[1]);
+                shipOrientation = char.Parse(shipPositionAndOrientation[2]);
+
+                if (shipXCoordinate < MinShipCoordinate || shipYCoordinate < MinShipCoordinate ||
+                    shipXCoordinate > MaxCoordinate || shipYCoordinate > MaxCoordinate)
+                {
+                    throw new Exception("Invalid Ship Coordinate");
+                }
+
+                if (!Enum.IsDefined(typeof(Orientation), (int)shipOrientation))
+                {
+                    throw new Exception("Invalid Ship Orientation");
+                }
+
+                shipList.Add(new Ship(new Coordinates(shipXCoordinate, shipYCoordinate), (Orientation)shipOrientation));
             }
 
-            if (!Enum.IsDefined(typeof(Orientation), (int)shipOrientation))
-            {
-                throw new Exception("Invalid Ship Orientation");
-            }
-
-            return new Ship(new Coordinates(shipXCoordinate, shipYCoordinate), (Orientation)shipOrientation);
+            return shipList;
         }
 
         public static void PrintShipFinalPosition(Ship ship)
