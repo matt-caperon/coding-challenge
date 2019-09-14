@@ -67,7 +67,8 @@ namespace CodingChallenge
                             if (!shipOnWarningPosition)
                             {
                                 // Determine if ship is lost
-                                if (newCoordinates.x > mapSize.x || newCoordinates.y > mapSize.y)
+                                if (newCoordinates.x > mapSize.x || newCoordinates.y > mapSize.y ||
+                                    newCoordinates.x < 0 || newCoordinates.y < 0)
                                 {
                                     // Mark ship as lost
                                     ship.isLost = true;
