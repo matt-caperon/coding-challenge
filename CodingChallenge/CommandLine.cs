@@ -89,7 +89,7 @@ namespace CodingChallenge
             int shipYCoordinate;
             char shipOrientation;
 
-            // Reach each ships starting position and orientation
+            // Read ship starting position and orientation
             Console.WriteLine("Enter Ship Starting Position and Orientation");
             commandInput = Console.ReadLine();
             var shipPositionAndOrientation = commandInput.Split(' ');
